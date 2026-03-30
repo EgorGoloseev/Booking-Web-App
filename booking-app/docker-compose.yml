@@ -1,0 +1,22 @@
+services:
+
+  postgres:
+    image: postgres:15
+    container_name: booking_postgres
+    environment:
+      POSTGRES_USER: booking
+      POSTGRES_PASSWORD: booking
+      POSTGRES_DB: booking
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+
+  app:
+    build: .
+    container_name: booking_app
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+    environment:
+      DB_URL: postgres://booking:booking@postgres:5432/booking?sslmode=disable
